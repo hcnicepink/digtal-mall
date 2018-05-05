@@ -23,8 +23,24 @@
         <div class="nav-service-item nav-login">
           <img src="../assets/user.png" alt="">
           <ul class="login-dropdown">
-            <li class="login-dropdown-item"><router-link class="nav-a" to="/login">立即登录</router-link></li>
-            <li class="login-dropdown-item"><router-link class="nav-a" to="/register">立即注册</router-link></li>
+            <li class="login-dropdown-item">
+              <a
+                href="javascript:void(0)"
+                class="nav-a"
+                @click="() => {
+                  loginShow = true
+                  isLogin = true
+                }">立即登录</a>
+            </li>
+            <li class="login-dropdown-item">
+              <a
+                href="javascript:void(0)"
+                class="nav-a"
+                @click="() => {
+                  loginShow = true
+                  isLogin = false
+                }">立即注册</a>
+              </li>
           </ul>
         </div>
         <div class="nav-service-item nav-cart">
@@ -33,7 +49,23 @@
       </div>
       <!-- 服务列表 -->
     </div>
-    <!-- <modal></modal> -->
+    <modal :show="loginShow" @close="loginShow = false" :width="432">
+      <div class="login-header" slot="header">
+        <img src="../assets/logo.png" alt="">
+        <p v-if="isLogin">登录潮数码，你想要的都在这里</p>
+        <p v-else>注册潮数码，你想要的都在这里</p>
+      </div>
+      <div class="login-main" slot="main">
+        <div class="login-input"><input placeholder="用户名" type="text"></div>
+        <div class="login-input"><input placeholder="密码" type="password"></div>
+        <button v-if="isLogin" class="login-button">登录</button>
+        <button v-else class="login-button">注册</button>
+      </div>
+      <div class="login-footer" slot="footer">
+        <p v-if="isLogin">已有账号？<a href="javascript:void(0)" @click="isLogin = !isLogin">登录</a></p>
+        <p v-else>没有账号？<a href="javascript:void(0)" @click="isLogin = !isLogin">注册</a></p>
+      </div>
+    </modal>
   </nav>
 </template>
 <script>
@@ -41,6 +73,14 @@ import Modal from '@/components/Modal'
 export default {
   components: {
     Modal
+  },
+  data () {
+    return {
+      loginShow: false,
+      isLogin: true
+    }
+  },
+  methods: {
   }
 }
 </script>
@@ -141,5 +181,70 @@ nav.header * {
   height: 22px;
   vertical-align: middle;
   cursor: pointer;
+}
+.login-header img {
+  display: block;
+  width: 150px;
+  height: 65px;
+  margin: 10px auto;
+}
+.login-header p {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  height: 2rem;
+  line-height: 2rem;
+  font-size: 1.6rem;
+  color: #0084ff;
+}
+.login-main {
+  font-size: 1.4rem;
+}
+.login-input {
+  height: 48px;
+  line-height: 48px;
+  width: 352px;
+  margin: 12px auto;
+  border-bottom: 1px solid #777;
+}
+.login-input input {
+  height: 48px;
+  width: 352px;
+  border: none;
+}
+.login-button {
+  display: block;
+  margin: 36px auto;
+  width: 352px;
+  color: #fff;
+  background-color: #0084ff;
+  height: 36px;
+  line-height: 36px;
+  border: none;
+  border-radius: 4px;
+}
+.login-button:focus {
+  outline: none;
+}
+.login-input input:focus {
+  outline: none;
+}
+.login-footer {
+  height: 60px;
+  border-top: 1px solid #ddd;
+  background-color: #eee;
+}
+.login-footer p {
+  height: 59px;
+  line-height: 59px;
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  text-align: center;
+}
+.login-footer p a {
+  font-size: 16px;
+  color: #175199;
+  text-decoration: none;
 }
 </style>

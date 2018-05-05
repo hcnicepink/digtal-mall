@@ -2,9 +2,9 @@
   <div>
     <nav-header></nav-header>
     <carousel
-    :resource="carouselResource"
-    :height="480"
-    :interval="4000"></carousel>
+      :resource="carouselResource"
+      :height="480"
+      :interval="4000"></carousel>
     <div class="container">
       <h1>热品推荐</h1>
     </div>

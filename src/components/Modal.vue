@@ -1,12 +1,29 @@
 <template>
-  <div class="modal">
-    <div class="modal-mask"></div>
-    <div class="modal-body"></div>
+  <div
+    class="modal"
+    v-show="show">
+    <div class="modal-mask" @click="close"></div>
+    <div class="modal-body" :style="{ width: width + 'px' }">
+      <slot name="header"></slot>
+      <slot name="main"></slot>
+      <slot name="footer">
+
+      </slot>
+    </div>
   </div>
 </template>
 <script>
 export default {
-
+  props: ['show', 'width'],
+  data () {
+    return {
+    }
+  },
+  methods: {
+    close () {
+      this.$emit('close')
+    }
+  }
 }
 </script>
 <style scoped>
@@ -26,8 +43,8 @@ export default {
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
   width: 400px;
-  height: 500px;
   background-color: #fff;
   z-index: 1000;
+  border-radius: 2px;
 }
 </style>
