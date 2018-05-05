@@ -56,9 +56,9 @@
         <p v-else>注册潮数码，你想要的都在这里</p>
       </div>
       <div class="login-main" slot="main">
-        <div class="login-input"><input placeholder="用户名" type="text"></div>
-        <div class="login-input"><input placeholder="密码" type="password"></div>
-        <button v-if="isLogin" class="login-button">登录</button>
+        <div class="login-input"><input v-model="username" placeholder="用户名" type="text"></div>
+        <div class="login-input"><input v-model="password" placeholder="密码" type="password"></div>
+        <button v-if="isLogin" class="login-button" @click="login">登录</button>
         <button v-else class="login-button">注册</button>
       </div>
       <div class="login-footer" slot="footer">
@@ -70,17 +70,28 @@
 </template>
 <script>
 import Modal from '@/components/Modal'
+import axios from 'axios'
 export default {
   components: {
     Modal
   },
   data () {
     return {
+      username: '',
+      password: '',
       loginShow: false,
       isLogin: true
     }
   },
   methods: {
+    login () {
+      axios.post('/user/login', {
+        username: this.username,
+        password: this.password
+      }).then(res => {
+        console.log(res)
+      })
+    }
   }
 }
 </script>
@@ -195,7 +206,7 @@ nav.header * {
   height: 2rem;
   line-height: 2rem;
   font-size: 1.6rem;
-  color: #0084ff;
+  color: #0074ff;
 }
 .login-main {
   font-size: 1.4rem;

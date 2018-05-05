@@ -6,9 +6,7 @@
     <div class="modal-body" :style="{ width: width + 'px' }">
       <slot name="header"></slot>
       <slot name="main"></slot>
-      <slot name="footer">
-
-      </slot>
+      <slot name="footer"></slot>
     </div>
   </div>
 </template>
