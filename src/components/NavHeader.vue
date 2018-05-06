@@ -76,7 +76,7 @@
         <p v-if="isLogin">登录潮数码，你想要的都在这里</p>
         <p v-else>注册潮数码，你想要的都在这里</p>
       </div>
-      <form class="login-main" slot="main">
+      <div class="login-main" slot="main">
         <div class="login-input">
           <input ref="username" @focus="showUsernameErrorMsg = false" @blur="validateUsername" v-model="username" placeholder="用户名(邮箱)" type="text">
           <div ref="usernameError" v-show="showUsernameErrorMsg" @click="usernameInput" class="login-error">{{ usernameErrorMsg }}</div>
@@ -87,7 +87,7 @@
         </div>
         <button v-if="isLogin" class="login-button" @click="login">登录</button>
         <button v-else class="login-button">注册</button>
-      </form>
+      </div>
       <div class="login-footer" slot="footer">
         <p v-if="isLogin">已有账号？<a href="javascript:void(0)" @click="isLogin = !isLogin">登录</a></p>
         <p v-else>没有账号？<a href="javascript:void(0)" @click="isLogin = !isLogin">注册</a></p>
@@ -148,7 +148,6 @@ export default {
     passwordInput () {
       this.showPasswordErrorMsg = false
       this.$refs.password.focus()
-      console.log('passwoedInput')
     },
     validatePassword () {
       this.$refs.passwordError.style.backgroundColor = '#fff'
