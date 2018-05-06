@@ -22,13 +22,27 @@
         <div class="nav-service-item nav-search"><input type="text"></div>
         <div class="nav-service-item nav-login">
           <img src="../assets/user.png" alt="">
-          <ul class="login-dropdown">
+          <ul v-if="isOnline" class="login-dropdown">
+            <li class="login-dropdown-item">
+              <a
+                href="javascript:void(0)"
+                class="nav-a"
+                @click="() => {}">我的订单</a>
+            </li>
+            <li class="login-dropdown-item">
+              <a
+                href="javascript:void(0)"
+                class="nav-a"
+                @click="() => {}">退出</a>
+              </li>
+          </ul>
+          <ul v-else class="login-dropdown">
             <li class="login-dropdown-item">
               <a
                 href="javascript:void(0)"
                 class="nav-a"
                 @click="() => {
-                  loginShow = true
+                  loginModalShow = true
                   isLogin = true
                 }">立即登录</a>
             </li>
@@ -37,7 +51,7 @@
                 href="javascript:void(0)"
                 class="nav-a"
                 @click="() => {
-                  loginShow = true
+                  loginModalShow = true
                   isLogin = false
                 }">立即注册</a>
               </li>
@@ -49,18 +63,31 @@
       </div>
       <!-- 服务列表 -->
     </div>
-    <modal :show="loginShow" @close="loginShow = false" :width="432">
+    <modal
+      :show="loginModalShow"
+      @close="() => {
+        loginModalShow = false
+        showUsernameErrorMsg = false
+        showPasswordErrorMsg = false
+      }"
+      :width="432">
       <div class="login-header" slot="header">
         <img src="../assets/logo.png" alt="">
         <p v-if="isLogin">登录潮数码，你想要的都在这里</p>
         <p v-else>注册潮数码，你想要的都在这里</p>
       </div>
-      <div class="login-main" slot="main">
-        <div class="login-input"><input v-model="username" placeholder="用户名" type="text"></div>
-        <div class="login-input"><input v-model="password" placeholder="密码" type="password"></div>
+      <form class="login-main" slot="main">
+        <div class="login-input">
+          <input ref="username" @focus="showUsernameErrorMsg = false" @blur="validateUsername" v-model="username" placeholder="用户名(邮箱)" type="text">
+          <div ref="usernameError" v-show="showUsernameErrorMsg" @click="usernameInput" class="login-error">{{ usernameErrorMsg }}</div>
+        </div>
+        <div class="login-input">
+          <input ref="password" @focus="showPasswordErrorMsg = false" @blur="validatePassword" v-model="password" placeholder="密码" type="password" @keyup.enter="login">
+          <div ref="passwordError" v-show="showPasswordErrorMsg" @click="passwordInput" class="login-error">{{ passwordErrorMsg }}</div>
+        </div>
         <button v-if="isLogin" class="login-button" @click="login">登录</button>
         <button v-else class="login-button">注册</button>
-      </div>
+      </form>
       <div class="login-footer" slot="footer">
         <p v-if="isLogin">已有账号？<a href="javascript:void(0)" @click="isLogin = !isLogin">登录</a></p>
         <p v-else>没有账号？<a href="javascript:void(0)" @click="isLogin = !isLogin">注册</a></p>
@@ -79,8 +106,17 @@ export default {
     return {
       username: '',
       password: '',
-      loginShow: false,
-      isLogin: true
+      loginModalShow: false,
+      isLogin: true,
+      usernameErrorMsg: '',
+      passwordErrorMsg: '',
+      showUsernameErrorMsg: true,
+      showPasswordErrorMsg: true
+    }
+  },
+  computed: {
+    isOnline () {
+      return this.$store.state.userId !== ''
     }
   },
   methods: {
@@ -88,9 +124,38 @@ export default {
       axios.post('/user/login', {
         username: this.username,
         password: this.password
-      }).then(res => {
-        console.log(res)
+      }).then(response => {
+        let res = response.data
+        if (res.status === '0') {
+          this.$store.commit('updateUserId', res.result.id)
+        }
+        this.loginModalShow = false
+        this.username = ''
+        this.password = ''
       })
+    },
+    usernameInput (event) {
+      this.showUsernameErrorMsg = false
+      this.$refs.username.focus()
+    },
+    validateUsername () {
+      this.$refs.usernameError.style.backgroundColor = '#fff'
+      if (this.username === '') {
+        this.showUsernameErrorMsg = true
+        this.usernameErrorMsg = '请输入邮箱'
+      }
+    },
+    passwordInput () {
+      this.showPasswordErrorMsg = false
+      this.$refs.password.focus()
+      console.log('passwoedInput')
+    },
+    validatePassword () {
+      this.$refs.passwordError.style.backgroundColor = '#fff'
+      if (this.username === '') {
+        this.showPasswordErrorMsg = true
+        this.passwordErrorMsg = '请输入密码'
+      }
     }
   }
 }
@@ -212,13 +277,25 @@ nav.header * {
   font-size: 1.4rem;
 }
 .login-input {
+  position: relative;
   height: 48px;
   line-height: 48px;
   width: 352px;
   margin: 12px auto;
   border-bottom: 1px solid #777;
 }
+.login-input .login-error {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 48px;
+  line-height: 48px;
+  width: 352px;
+  color: #f1403c;
+  cursor: text;
+}
 .login-input input {
+  display: block;
   height: 48px;
   width: 352px;
   border: none;
@@ -233,9 +310,6 @@ nav.header * {
   line-height: 36px;
   border: none;
   border-radius: 4px;
-}
-.login-button:focus {
-  outline: none;
 }
 .login-input input:focus {
   outline: none;
