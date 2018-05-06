@@ -128,10 +128,10 @@ export default {
         let res = response.data
         if (res.status === '0') {
           this.$store.commit('updateUserEmail', res.result.email)
+          this.loginModalShow = false
+          this.username = ''
+          this.password = ''
         }
-        this.loginModalShow = false
-        this.username = ''
-        this.password = ''
       })
     },
     usernameInput (event) {
