@@ -116,7 +116,7 @@ export default {
   },
   computed: {
     isOnline () {
-      return this.$store.state.userId !== ''
+      return this.$store.state.userEmail !== ''
     }
   },
   methods: {
@@ -127,7 +127,7 @@ export default {
       }).then(response => {
         let res = response.data
         if (res.status === '0') {
-          this.$store.commit('updateUserId', res.result.id)
+          this.$store.commit('updateUserEmail', res.result.email)
         }
         this.loginModalShow = false
         this.username = ''
