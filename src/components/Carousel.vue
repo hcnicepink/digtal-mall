@@ -1,27 +1,29 @@
 <template>
-  <div
-    class="carousel"
-    :style="{ height: height + 'px' }">
-    <transition name="fade">
-      <img
-        class="carousel-img"
+  <div class="container">
+    <div
+      class="carousel"
+      :style="{ height: height + 'px' }">
+      <transition name="fade">
+        <img
+          class="carousel-img"
+          v-for="(elem, index) in resource"
+          v-if="index === showIndex"
+          :key="index"
+          :src="elem"
+          :alt="index">
+      </transition>
+      <div class="carousel-arrow carousel-prev" @click="editIndex(-1)"><img src="../assets/left.png" alt=""></div>
+      <div class="carousel-arrow carousel-next" @click="editIndex(1)"><img src="../assets/right.png" alt=""></div>
+      <ul class="carousel-dots">
+        <li
+        class="carousel-dot"
+        :class="{ 'carousel-dot-selected': index === showIndex }"
         v-for="(elem, index) in resource"
-        v-if="index === showIndex"
         :key="index"
-        :src="elem"
-        :alt="index">
-    </transition>
-    <div class="carousel-arrow carousel-prev" @click="editIndex(-1)"><img src="../assets/left.png" alt=""></div>
-    <div class="carousel-arrow carousel-next" @click="editIndex(1)"><img src="../assets/right.png" alt=""></div>
-    <ul class="carousel-dots">
-      <li
-      class="carousel-dot"
-      :class="{ 'carousel-dot-selected': index === showIndex }"
-      v-for="(elem, index) in resource"
-      :key="index"
-      @mouseover="editIndex(0 ,index)"
-      ></li>
-    </ul>
+        @mouseover="editIndex(0 ,index)"
+        ></li>
+      </ul>
+    </div>
   </div>
 </template>
 <script>
@@ -66,10 +68,11 @@ export default {
 .carousel {
   position: relative;
   width: 100%;
-  overflow: hidden;
+  overflow: visible;
 }
 .carousel-img {
   position: absolute;
+  left: -340px;
 }
 .carousel-arrow {
   display: block;
