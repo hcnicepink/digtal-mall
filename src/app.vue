@@ -24,7 +24,7 @@ export default {
 }
 body {
   min-width: 1240px;
-  overflow-x: hidden;
+  overflow-x: auto;
 }
 html {
   font-size: 10px;

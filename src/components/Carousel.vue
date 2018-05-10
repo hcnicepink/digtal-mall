@@ -1,4 +1,5 @@
 <template>
+<div class="container-flow">
   <div class="container">
     <div
       class="carousel"
@@ -25,6 +26,7 @@
       </ul>
     </div>
   </div>
+</div>
 </template>
 <script>
 export default {
@@ -59,6 +61,9 @@ export default {
 }
 </script>
 <style scoped>
+.container-flow {
+  overflow: hidden;
+}
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;
 }
