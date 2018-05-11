@@ -69,6 +69,8 @@
         loginModalShow = false
         showUsernameErrorMsg = false
         showPasswordErrorMsg = false
+        showUsernameErrorMsgRegister = false
+        showPasswordErrorMsgRegister = false
       }"
       :width="432">
       <div class="login-header" slot="header">
@@ -76,21 +78,62 @@
         <p v-if="isLogin">登录潮数码，你想要的都在这里</p>
         <p v-else>注册潮数码，你想要的都在这里</p>
       </div>
-      <div class="login-main" slot="main">
+      <!-- 登录 -->
+      <div v-show="isLogin" class="login-main" slot="main">
         <div class="login-input">
-          <input ref="username" @focus="showUsernameErrorMsg = false" @blur="validateUsername" v-model="username" placeholder="用户名(邮箱)" type="text">
-          <div ref="usernameError" v-show="showUsernameErrorMsg" @click="usernameInput" class="login-error">{{ usernameErrorMsg }}</div>
+          <input ref="username" @focus="showUsernameErrorMsg = false" @blur="validateUsername" v-model="username" placeholder="用户名 (邮箱)" type="text">
+          <div
+            ref="usernameError"
+            v-show="showUsernameErrorMsg"
+            @click="usernameInput"
+            :style="{
+              'background-color': usernameErrorMsg === '' || usernameValidateError ? 'transparent': '#fff',
+              'text-align': usernameValidateError ? 'right': 'left'}"
+            class="login-error">{{ usernameErrorMsg }}</div>
         </div>
         <div class="login-input">
           <input ref="password" @focus="showPasswordErrorMsg = false" @blur="validatePassword" v-model="password" placeholder="密码" type="password" @keyup.enter="login">
-          <div ref="passwordError" v-show="showPasswordErrorMsg" @click="passwordInput" class="login-error">{{ passwordErrorMsg }}</div>
+          <div
+            ref="passwordError"
+            v-show="showPasswordErrorMsg"
+            @click="passwordInput"
+            :style="{
+              'background-color': passwordErrorMsg === '' || passwordValidateError ? 'transparent': '#fff',
+              'text-align': passwordValidateError ? 'right': 'left'}"
+            class="login-error">{{ passwordErrorMsg }}</div>
         </div>
-        <button v-if="isLogin" class="login-button" @click="login">登录</button>
-        <button v-else class="login-button">注册</button>
+        <button class="login-button" @click="login">登录</button>
+      </div>
+      <!-- 注册 -->
+      <div v-show="!isLogin" class="login-main" slot="main">
+        <div class="login-input">
+          <input ref="usernameRegister" @focus="showUsernameErrorMsgRegister = false" @blur="validateUsernameRegister" v-model="usernameRegister" placeholder="用户名 (邮箱)" type="text">
+          <div
+            ref="usernameErrorRegister"
+            v-show="showUsernameErrorMsgRegister"
+            @click="usernameInputRegister"
+            :style="{
+              'background-color': usernameErrorMsgRegister === '' || usernameValidateErrorRegister ? 'transparent': '#fff',
+              'text-align': usernameValidateErrorRegister ? 'right': 'left'}"
+            class="login-error">{{ usernameErrorMsgRegister }}</div>
+        </div>
+        <div class="login-input">
+          <input ref="passwordRegister" @focus="showPasswordErrorMsgRegister = false" @blur="validatePasswordRegister" v-model="passwordRegister" placeholder="密码 (字母开头, 6~18位, 只包含数字、字母、下划线)" type="password" @keyup.enter="register">
+          <div
+            ref="passwordErrorRegister"
+            v-show="showPasswordErrorMsgRegister"
+            @click="passwordInputRegister"
+            :style="{
+              'background-color': passwordErrorMsgRegister === '' || passwordValidateErrorRegister ? 'transparent': '#fff',
+              'text-align': passwordValidateErrorRegister ? 'right': 'left'}"
+            class="login-error">{{ passwordErrorMsgRegister }}</div>
+        </div>
+        <button class="login-button" @click="register">注册</button>
+        <p>注册即代表同意<a href="#">《商城协议》</a></p>
       </div>
       <div class="login-footer" slot="footer">
-        <p v-if="isLogin">已有账号？<a href="javascript:void(0)" @click="isLogin = !isLogin">登录</a></p>
-        <p v-else>没有账号？<a href="javascript:void(0)" @click="isLogin = !isLogin">注册</a></p>
+        <p v-if="!isLogin">已有账号？<a href="javascript:void(0)" @click="() => {isLogin = !isLogin; clear()}">登录</a></p>
+        <p v-else>没有账号？<a href="javascript:void(0)" @click="isLogin = !isLogin; clear()">注册</a></p>
       </div>
     </modal>
   </nav>
@@ -106,12 +149,22 @@ export default {
     return {
       username: '',
       password: '',
+      usernameRegister: '',
+      passwordRegister: '',
       loginModalShow: false,
       isLogin: true,
       usernameErrorMsg: '',
       passwordErrorMsg: '',
       showUsernameErrorMsg: true,
-      showPasswordErrorMsg: true
+      showPasswordErrorMsg: true,
+      usernameValidateError: false,
+      passwordValidateError: false,
+      usernameErrorMsgRegister: '',
+      passwordErrorMsgRegister: '',
+      showUsernameErrorMsgRegister: true,
+      showPasswordErrorMsgRegister: true,
+      usernameValidateErrorRegister: false,
+      passwordValidateErrorRegister: false
     }
   },
   computed: {
@@ -120,40 +173,144 @@ export default {
     }
   },
   methods: {
+    clear () {
+      this.username = ''
+      this.password = ''
+      this.usernameRegister = ''
+      this.passwordRegister = ''
+      this.usernameErrorMsg = ''
+      this.passwordErrorMsg = ''
+      this.showUsernameErrorMsg = true
+      this.showPasswordErrorMsg = true
+      this.usernameValidateError = false
+      this.passwordValidateError = false
+      this.usernameErrorMsgRegister = ''
+      this.passwordErrorMsgRegister = ''
+      this.showUsernameErrorMsgRegister = true
+      this.showPasswordErrorMsgRegister = true
+      this.usernameValidateErrorRegister = false
+      this.passwordValidateErrorRegister = false
+    },
     login () {
-      axios.post('/user/login', {
-        username: this.username,
-        password: this.password
-      }).then(response => {
-        let res = response.data
-        if (res.status === '0') {
-          this.$store.commit('updateUserEmail', res.result.email)
-          this.loginModalShow = false
-          this.username = ''
-          this.password = ''
-        }
-      })
+      if (this.validateUsername() && this.validatePassword()) {
+        axios.post('/user/login', {
+          username: this.username,
+          password: this.password
+        }).then(response => {
+          let res = response.data
+          if (res.code === 200) {
+            this.$store.commit('updateUserEmail', res.result.email)
+            this.loginModalShow = false
+            this.username = ''
+            this.password = ''
+          } else if (res.code === 201) {
+            this.showPasswordErrorMsg = true
+            this.passwordValidateError = true
+            this.passwordErrorMsg = res.msg
+          }
+        })
+      }
+    },
+    register () {
+      if (this.validateUsernameRegister() && this.validatePasswordRegister()) {
+        axios.post('/user/register', {
+          username: this.usernameRegister,
+          password: this.passwordRegister
+        }).then(response => {
+          let res = response.data
+          if (res.code === 200) {
+            this.isLogin = true
+            this.usernameRegister = ''
+            this.passwordRegister = ''
+            this.clear()
+            alert(res.msg)
+          } else if (res.code === 201) {
+            this.showUsernameErrorMsgRegister = true
+            this.usernameValidateErrorRegister = true
+            this.usernameErrorMsgRegister = res.msg
+          } else if (res.code === 202) {
+            this.showPasswordErrorMsgRegister = true
+            this.passwordValidateErrorRegister = true
+            this.passwordErrorMsgRegister = res.msg
+          }
+        })
+      }
     },
     usernameInput (event) {
       this.showUsernameErrorMsg = false
       this.$refs.username.focus()
     },
+    usernameInputRegister (event) {
+      this.showUsernameErrorMsgRegister = false
+      this.$refs.usernameRegister.focus()
+    },
     validateUsername () {
-      this.$refs.usernameError.style.backgroundColor = '#fff'
       if (this.username === '') {
         this.showUsernameErrorMsg = true
+        this.usernameValidateError = false
         this.usernameErrorMsg = '请输入邮箱'
+        return false
+      } else if (!(/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(this.username))) {
+        // 判断是否为正确的邮箱
+        this.showUsernameErrorMsg = true
+        this.usernameValidateError = true
+        this.usernameErrorMsg = '请输入正确的邮箱'
+        return false
+      } else {
+        this.showUsernameErrorMsg = false
+        return true
+      }
+    },
+    validateUsernameRegister () {
+      if (this.usernameRegister === '') {
+        this.showUsernameErrorMsgRegister = true
+        this.usernameValidateErrorRegister = false
+        this.usernameErrorMsgRegister = '请输入邮箱'
+        return false
+      } else if (!(/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(this.usernameRegister))) {
+        // 判断是否为正确的邮箱
+        this.showUsernameErrorMsgRegister = true
+        this.usernameValidateErrorRegister = true
+        this.usernameErrorMsgRegister = '请输入正确的邮箱'
+        return false
+      } else {
+        this.showUsernameErrorMsgRegister = false
+        return true
       }
     },
     passwordInput () {
       this.showPasswordErrorMsg = false
       this.$refs.password.focus()
     },
+    passwordInputRegister () {
+      this.showPasswordErrorMsgRegister = false
+      this.$refs.passwordRegister.focus()
+    },
     validatePassword () {
-      this.$refs.passwordError.style.backgroundColor = '#fff'
-      if (this.username === '') {
+      if (this.password === '') {
         this.showPasswordErrorMsg = true
+        this.passwordValidateError = false
         this.passwordErrorMsg = '请输入密码'
+        return false
+      } else {
+        this.showUsernameErrorMsg = false
+        return true
+      }
+    },
+    validatePasswordRegister () {
+      if (this.passwordRegister === '') {
+        this.showPasswordErrorMsgRegister = true
+        this.passwordValidateErrorRegister = false
+        this.passwordErrorMsgRegister = '请输入密码'
+        return false
+      } else if (!(/\w{5,17}$/.test(this.passwordRegister))) {
+        this.showPasswordErrorMsgRegister = true
+        this.passwordValidateErrorRegister = true
+        this.passwordErrorMsgRegister = '请输入符合格式的密码'
+        return false
+      } else {
+        this.showUsernameErrorMsgRegister = false
+        return true
       }
     }
   }
@@ -275,6 +432,18 @@ nav.header * {
 .login-main {
   font-size: 1.4rem;
 }
+.login-main > p {
+  margin: 36px 0;
+  text-align: center;
+  height: 2rem;
+  line-height: 2rem;
+  font-size: 1.4rem;
+  color: #555;
+}
+.login-main > p > a {
+  color: #175199;
+  text-decoration: none;
+}
 .login-input {
   position: relative;
   height: 48px;
@@ -292,6 +461,10 @@ nav.header * {
   width: 352px;
   color: #f1403c;
   cursor: text;
+}
+.login-input .login-validate-error {
+  text-align: right;
+  background-color: transparent !important;
 }
 .login-input input {
   display: block;
