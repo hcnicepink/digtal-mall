@@ -2,7 +2,7 @@
   <div>
     <nav-header></nav-header>
     <carousel
-      :resource="carouselResource"
+      :resource="carousel"
       :height="480"
       :interval="4000"></carousel>
     <div class="container">
@@ -30,21 +30,28 @@ export default {
     NavFooter
   },
   mounted () {
-    axios.get('/goods/hot', {}).then(response => {
+    axios.get('/user/checkLogin').then(response => {
+      let res = response.data
+      if (res.code === 200) {
+        this.$store.commit('updateUserEmail', res.result)
+      }
+    })
+    axios.get('/goods/hot').then(response => {
       let res = response.data
       if (res.status === '0') {
         this.hotGoodsList = res.result
       }
     })
+    axios.get('/carousel').then(response => {
+      let res = response.data
+      if (res.code === 200) {
+        this.carousel = res.result
+      }
+    })
   },
   data () {
     return {
-      carouselResource: [
-        'https://openfile.meizu.com/group1/M00/03/A4/Cgbj0Fq9nl6AQ-fzAAFEinMxkCA226.jpg',
-        'https://openfile.meizu.com/group1/M00/04/50/Cgbj0Vrm1XKAQKv5AAIyvLNPIyk516.jpg',
-        'https://openfile.meizu.com/group1/M00/04/43/Cgbj0FrpKp-AWDFSAAJ3oJttGL8631.jpg',
-        'https://openfile.meizu.com/group1/M00/04/22/Cgbj0FrgU6eAUCLwAAIOyCb_-l4769.jpg'
-      ],
+      carousel: [],
       hotGoodsList: []
     }
   },

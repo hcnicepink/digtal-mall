@@ -10,7 +10,7 @@
           v-for="(elem, index) in resource"
           v-if="index === showIndex"
           :key="index"
-          :src="elem"
+          :src="elem.img"
           :alt="index">
       </transition>
       <div class="carousel-arrow carousel-prev" @click="editIndex(-1)"><img src="../assets/left.png" alt=""></div>
