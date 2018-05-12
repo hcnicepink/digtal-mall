@@ -5,13 +5,17 @@
       class="carousel"
       :style="{ height: height + 'px' }">
       <transition name="fade">
-        <img
-          class="carousel-img"
+        <a
           v-for="(elem, index) in resource"
           v-if="index === showIndex"
+          :href="elem.href"
           :key="index"
-          :src="elem.img"
-          :alt="index">
+          target="_blank">
+          <img
+            class="carousel-img"
+            :src="elem.img"
+            :alt="index">
+        </a>
       </transition>
       <div class="carousel-arrow carousel-prev" @click="editIndex(-1)"><img src="../assets/left.png" alt=""></div>
       <div class="carousel-arrow carousel-next" @click="editIndex(1)"><img src="../assets/right.png" alt=""></div>
@@ -64,11 +68,13 @@ export default {
 .container-flow {
   overflow: hidden;
 }
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: .5;
+.fade-enter,
+.fade-leave-to {
+  opacity: 0.5;
 }
 .carousel {
   position: relative;
@@ -92,13 +98,13 @@ export default {
   border: none;
   cursor: pointer;
   background-color: transparent;
-  transition: all .5s;
+  transition: all 0.5s;
   text-align: center;
   line-height: 60px;
 }
 .carousel:hover .carousel-arrow {
   background-color: #000;
-  opacity: .5;
+  opacity: 0.5;
 }
 .carousel-arrow img {
   vertical-align: middle;
