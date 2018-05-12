@@ -33,7 +33,7 @@
               <a
                 href="javascript:void(0)"
                 class="nav-a"
-                @click="() => {}">退出</a>
+                @click="logout">退出</a>
               </li>
           </ul>
           <ul v-else class="login-dropdown">
@@ -235,6 +235,15 @@ export default {
           }
         })
       }
+    },
+    logout () {
+      axios.get('/user/logout').then(response => {
+        let res = response.data
+        if (res.code === 200) {
+          this.$store.commit('updateUserEmail', '')
+          alert('退出成功')
+        }
+      })
     },
     usernameInput (event) {
       this.showUsernameErrorMsg = false
