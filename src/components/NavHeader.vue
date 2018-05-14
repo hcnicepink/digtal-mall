@@ -8,7 +8,7 @@
       <!-- logo -->
       <!-- 导航列表 -->
       <ul class="nav-list">
-        <li class="nav-list-item"><router-link to="/goods/all" class="nav-a">全部商品</router-link></li>
+        <li class="nav-list-item"><router-link to="/list" class="nav-a">全部商品</router-link></li>
         <li class="nav-list-item"><a href="#" class="nav-a">手机通讯</a></li>
         <li class="nav-list-item"><a href="#" class="nav-a">手机配件</a></li>
         <li class="nav-list-item"><a href="#" class="nav-a">摄影摄像</a></li>
