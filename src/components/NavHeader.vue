@@ -81,7 +81,7 @@
       <!-- 登录 -->
       <div v-show="isLogin" class="login-main" slot="main">
         <div class="login-input">
-          <input ref="username" @focus="showUsernameErrorMsg = false" @blur="validateUsername" v-model="username" placeholder="用户名 (邮箱)" type="text">
+          <input ref="username" @focus="showUsernameErrorMsg = false" autofocus @blur="validateUsername" v-model="username" placeholder="用户名 (邮箱)" type="text">
           <div
             ref="usernameError"
             v-show="showUsernameErrorMsg"
