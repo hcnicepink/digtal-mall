@@ -2,19 +2,18 @@
   <nav class="header">
     <div class="container clearfix">
       <!-- logo -->
-      <a href="#" class="nav-logo">
+      <router-link :to="'/'" class="nav-logo">
         <img src="../assets/logo.png" alt="">
-      </a>
+      </router-link>
       <!-- logo -->
       <!-- 导航列表 -->
       <ul class="nav-list">
         <li class="nav-list-item"><router-link to="/list" class="nav-a">全部商品</router-link></li>
-        <li class="nav-list-item"><a href="#" class="nav-a">手机通讯</a></li>
-        <li class="nav-list-item"><a href="#" class="nav-a">手机配件</a></li>
+        <li class="nav-list-item"><a href="#" class="nav-a">手机</a></li>
+        <li class="nav-list-item"><a href="#" class="nav-a">笔记本</a></li>
         <li class="nav-list-item"><a href="#" class="nav-a">摄影摄像</a></li>
         <li class="nav-list-item"><a href="#" class="nav-a">数码配件</a></li>
-        <li class="nav-list-item"><a href="#" class="nav-a">影音娱乐</a></li>
-        <li class="nav-list-item"><a href="#" class="nav-a">智能设备</a></li>
+        <li class="nav-list-item"><a href="#" class="nav-a">智能硬件</a></li>
       </ul>
       <!-- 导航列表 -->
       <!-- 服务列表 -->

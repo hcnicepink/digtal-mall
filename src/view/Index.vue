@@ -9,7 +9,7 @@
       <h1>热品推荐</h1>
       <ul class="hot-list">
         <li v-for="(elem, index) in hotGoodsList" class="hot-list-item" :key="index">
-          <img :src="elem.image" alt="">
+          <img :src="elem.pic[0].md" alt="">
           <p>{{ elem.name }}</p>
           <p style="color: #e02b41;">{{ '￥' + elem.price }}</p>
         </li>
@@ -36,9 +36,9 @@ export default {
         this.$store.commit('updateUserEmail', res.result)
       }
     })
-    axios.get('/goods/hot').then(response => {
+    axios.get('/list/hot').then(response => {
       let res = response.data
-      if (res.status === '0') {
+      if (res.code === 200) {
         this.hotGoodsList = res.result
       }
     })
@@ -56,7 +56,6 @@ export default {
     }
   },
   methods: {
-
   }
 }
 </script>
@@ -77,5 +76,10 @@ export default {
 .hot-list-item:hover {
   border-color: #bbb;
   z-index: 2;
+}
+.hot-list-item img {
+  margin: 36px 0;
+  height: 180px;
+  width: 180px;
 }
 </style>
