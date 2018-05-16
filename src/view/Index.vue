@@ -36,7 +36,7 @@ export default {
         this.$store.commit('updateUserEmail', res.result)
       }
     })
-    axios.get('/list/hot').then(response => {
+    axios.get('/goods/hot').then(response => {
       let res = response.data
       if (res.code === 200) {
         this.hotGoodsList = res.result

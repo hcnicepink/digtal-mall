@@ -10,11 +10,19 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    userEmail: ''
+    userEmail: '',
+    categoryId: '',
+    page: 1
   },
   mutations: {
     updateUserEmail (state, userEmail) {
       state.userEmail = userEmail
+    },
+    updateCategoryId (state, categoryId) {
+      state.categoryId = categoryId
+    },
+    updatePage (state, page) {
+      state.page = page
     }
   }
 })

@@ -34,7 +34,7 @@ export default {
     Breadcrumb
   },
   mounted () {
-    axios.get('/list/all').then(response => {
+    axios.get('/goods/all').then(response => {
       let res = response.data
       if (res.code === 200) {
         this.goodsList = res.result
