@@ -8,11 +8,10 @@
       <!-- logo -->
       <!-- 导航列表 -->
       <ul class="nav-list">
-        <li class="nav-list-item" @click="updateCategory"><router-link to="/list?categoryid=all" class="nav-a">全部商品</router-link></li>
+        <li class="nav-list-item"><router-link to="/list?categoryid=all" class="nav-a">全部商品</router-link></li>
         <li
           class="nav-list-item"
           v-for="(elem, index) in category"
-          @click="updateCategory"
           :key="index">
           <router-link
             :to="`/list?categoryid=${elem._id}`"
@@ -334,26 +333,6 @@ export default {
       } else {
         this.showUsernameErrorMsgRegister = false
         return true
-      }
-    },
-    updateCategory () {
-      let query = this.$route.query
-      if (query.categoryid === 'all') {
-        axios.get('/goods/all').then(response => {
-          let res = response.data
-          if (res.code === 200) {
-            this.$store.commit('uptateGoodsList', res.result)
-          }
-        })
-      } else {
-        axios.get('/goods/', {
-          params: query
-        }).then(response => {
-          let res = response.data
-          if (res.code === 200) {
-            this.$store.commit('uptateGoodsList', res.result)
-          }
-        })
       }
     }
   }
