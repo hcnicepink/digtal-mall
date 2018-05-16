@@ -153,13 +153,12 @@ export default {
     axios.get('/category').then(response => {
       let res = response.data
       if (res.code === 200) {
-        this.category = res.result
+        this.$store.commit('updateCategory', res.result)
       }
     })
   },
   data () {
     return {
-      category: [],
       username: '',
       password: '',
       usernameRegister: '',
@@ -183,6 +182,9 @@ export default {
   computed: {
     isOnline () {
       return this.$store.state.userEmail !== ''
+    },
+    category () {
+      return this.$store.state.category
     }
   },
   methods: {

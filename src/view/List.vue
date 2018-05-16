@@ -36,6 +36,7 @@ export default {
     Breadcrumb
   },
   mounted () {
+    // 更新货物列表
     let query = this.$route.query
     if (query.categoryid === 'all') {
       axios.get('/goods/all').then(response => {
@@ -54,12 +55,37 @@ export default {
         }
       })
     }
+    // 更新面包屑导航
+    // if (this.$route.query.categoryid === 'all') {
+    //   this.$store.commit('updateBreadcrumb', [
+    //     {
+    //       href: '/list/?categoryid=all',
+    //       content: '全部商品'
+    //     }
+    //   ])
+    // } else {
+    //   this.$store.state.category.forEach((elem, index) => {
+    //     if (elem._id === this.$route.query.categoryid) {
+    //       this.$store.commit('updateBreadcrumb', [
+    //         {
+    //           href: '/list/?categoryid=all',
+    //           content: '全部商品'
+    //         },
+    //         {
+    //           href: `/list/?categoryid=${elem._id}`,
+    //           content: elem.name
+    //         }
+    //       ])
+    //     }
+    //   })
+    // }
   },
   beforeRouteUpdate (to, from, next) {
     // 在当前路由改变，但是该组件被复用时调用
     // 举例来说，对于一个带有动态参数的路径 /foo/:id，在 /foo/1 和 /foo/2 之间跳转的时候，
     // 由于会渲染同样的 Foo 组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。
     // 可以访问组件实例 `this`
+    // 更新货物列表
     let query = to.query
     if (query.categoryid === 'all') {
       axios.get('/goods/all').then(response => {
@@ -78,25 +104,42 @@ export default {
         }
       })
     }
+    // 更新面包屑导航
+    if (to.query.categoryid === 'all') {
+      this.$store.commit('updateBreadcrumb', [
+        {
+          href: '/list/?categoryid=all',
+          content: '全部商品'
+        }
+      ])
+    } else {
+      this.$store.state.category.forEach((elem, index) => {
+        if (elem._id === to.query.categoryid) {
+          this.$store.commit('updateBreadcrumb', [
+            {
+              href: '/list/?categoryid=all',
+              content: '全部商品'
+            },
+            {
+              href: `/list/?categoryid=${elem._id}`,
+              content: elem.name
+            }
+          ])
+        }
+      })
+    }
     next()
   },
   data () {
     return {
-      breadcrumb: [
-        {
-          href: '/list/?categoryid=all',
-          content: '全部商品'
-        },
-        {
-          href: '#',
-          content: '手机'
-        }
-      ]
     }
   },
   computed: {
     goodsList () {
       return this.$store.state.goodsList
+    },
+    breadcrumb () {
+      return this.$store.state.breadcrumb
     }
   }
 }
