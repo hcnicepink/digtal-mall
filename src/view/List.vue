@@ -6,15 +6,18 @@
         <breadcrumb :data="breadcrumb"></breadcrumb>
         <div class="goods-list">
           <ul class="goods-list-wrap clearfix">
-            <li v-for="(elem, index) in goodsList" class="gl-item" :key="index">
-              <a href="#">
-                <div class="gl-item-wrap">
-                  <img :src="elem.pic[0].md" alt="">
-                  <p class="price">{{ '￥' + elem.price }}</p>
-                  <p class="title">{{ elem.title }}</p>
-                </div>
-              </a>
-            </li>
+            <transition-group name="fadedown">
+              <li v-for="(elem, index) in goodsList" class="gl-item" :key="index">
+                <a href="#">
+                  <div class="gl-item-wrap">
+                    <img :src="elem.pic[0].md" alt="">
+                    <p class="price">{{ '￥' + elem.price }}</p>
+                    <p class="title">{{ elem.title }}</p>
+                  </div>
+                </a>
+              </li>
+            </transition-group>
+
           </ul>
         </div>
       </div>
@@ -34,12 +37,24 @@ export default {
     Breadcrumb
   },
   mounted () {
-    axios.get('/goods/all').then(response => {
-      let res = response.data
-      if (res.code === 200) {
-        this.goodsList = res.result
-      }
-    })
+    let query = this.$route.query
+    if (query.categoryid === 'all') {
+      axios.get('/goods/all').then(response => {
+        let res = response.data
+        if (res.code === 200) {
+          this.$store.commit('uptateGoodsList', res.result)
+        }
+      })
+    } else {
+      axios.get('/goods/', {
+        params: query
+      }).then(response => {
+        let res = response.data
+        if (res.code === 200) {
+          this.$store.commit('uptateGoodsList', res.result)
+        }
+      })
+    }
   },
   data () {
     return {
@@ -52,8 +67,12 @@ export default {
           href: '#',
           content: '手机'
         }
-      ],
-      goodsList: []
+      ]
+    }
+  },
+  computed: {
+    goodsList () {
+      return this.$store.state.goodsList
     }
   }
 }
@@ -103,5 +122,13 @@ export default {
 }
 .gl-item-wrap .title:hover {
   color: #e02b41;
+}
+
+.fadedown-enter-active, .fadedown-leave-active {
+  transition: all .5s;
+}
+.fadedown-enter, .fadedown-leave-to {
+  opacity: 0;
+  transform: translateY(-10%)
 }
 </style>
