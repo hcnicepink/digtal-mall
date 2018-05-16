@@ -1,18 +1,22 @@
 <template>
-  <div
-    class="modal"
-    v-show="show">
-    <div class="modal-mask" @click="close"></div>
-    <div class="modal-body" :style="{ width: width + 'px' }">
-      <slot name="header"></slot>
-      <slot name="main"></slot>
-      <slot name="footer"></slot>
+  <transition :name="typeof transition === 'undefined' ? '' : 'fade'">
+    <div
+      class="modal"
+      v-show="show">
+      <div class="modal-mask" @click="close"></div>
+      <transition :name="transition">
+        <div v-show="show" class="modal-body" :style="{ width: width + 'px' }">
+          <slot name="header"></slot>
+          <slot name="main"></slot>
+          <slot name="footer"></slot>
+        </div>
+      </transition>
     </div>
-  </div>
+  </transition>
 </template>
 <script>
 export default {
-  props: ['show', 'width'],
+  props: ['show', 'width', 'transition'],
   data () {
     return {
     }
@@ -44,5 +48,22 @@ export default {
   background-color: #fff;
   z-index: 1000;
   border-radius: 2px;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: all .2s;
+}
+.fadeup-enter-active, .fadeup-leave-active {
+  transition: all .5s;
+}
+.fadeup-enter, .fadeup-leave-to {
+  opacity: 0;
+  transform: translateY(-40%) translateX(-50%);
+}
+.fadedown-enter-active, .fadedown-leave-active {
+  transition: all .2s;
+}
+.fadedown-enter, .fadedown-leave-to {
+  opacity: 0;
+  transform: translateY(-60%) translateX(-50%);
 }
 </style>

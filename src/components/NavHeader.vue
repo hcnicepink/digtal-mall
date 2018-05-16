@@ -76,6 +76,7 @@
         showUsernameErrorMsgRegister = false
         showPasswordErrorMsgRegister = false
       }"
+      transition="fadeup"
       :width="432">
       <div class="login-header" slot="header">
         <img src="../assets/logo.png" alt="">
