@@ -56,29 +56,36 @@ export default {
       })
     }
     // 更新面包屑导航
-    // if (this.$route.query.categoryid === 'all') {
-    //   this.$store.commit('updateBreadcrumb', [
-    //     {
-    //       href: '/list/?categoryid=all',
-    //       content: '全部商品'
-    //     }
-    //   ])
-    // } else {
-    //   this.$store.state.category.forEach((elem, index) => {
-    //     if (elem._id === this.$route.query.categoryid) {
-    //       this.$store.commit('updateBreadcrumb', [
-    //         {
-    //           href: '/list/?categoryid=all',
-    //           content: '全部商品'
-    //         },
-    //         {
-    //           href: `/list/?categoryid=${elem._id}`,
-    //           content: elem.name
-    //         }
-    //       ])
-    //     }
-    //   })
-    // }
+    let category
+    axios.get('/category').then(response => {
+      let res = response.data
+      if (res.code === 200) {
+        category = res.result
+      }
+      if (this.$route.query.categoryid === 'all') {
+        this.$store.commit('updateBreadcrumb', [
+          {
+            href: '/list/?categoryid=all',
+            content: '全部商品'
+          }
+        ])
+      } else {
+        category.forEach((elem, index) => {
+          if (elem._id === this.$route.query.categoryid) {
+            this.$store.commit('updateBreadcrumb', [
+              {
+                href: '/list/?categoryid=all',
+                content: '全部商品'
+              },
+              {
+                href: `/list/?categoryid=${elem._id}`,
+                content: elem.name
+              }
+            ])
+          }
+        })
+      }
+    })
   },
   beforeRouteUpdate (to, from, next) {
     // 在当前路由改变，但是该组件被复用时调用
