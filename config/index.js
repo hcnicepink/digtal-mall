@@ -14,7 +14,8 @@ module.exports = {
       '/user/**': 'http://localhost:3000',
       '/goods/**': 'http://localhost:3000',
       '/carousel': 'http://localhost:3000',
-      '/category': 'http://localhost:3000'
+      '/category': 'http://localhost:3000',
+      '/brand': 'http://localhost:3000'
     },
 
     // Various Dev Server settings
