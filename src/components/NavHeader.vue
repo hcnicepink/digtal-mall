@@ -354,6 +354,7 @@ export default {
 nav.header {
   height: 80px;
   line-height: 80px;
+  border-bottom: 1px solid #efefef;
 }
 nav.header * {
   font-size: 1.4rem;
