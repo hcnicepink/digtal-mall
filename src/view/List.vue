@@ -246,10 +246,7 @@ export default {
       }).then(response => {
         let res = response.data
         if (res.code === 200) {
-          this.goodsList = []
-          setTimeout(() => {
-            this.goodsList = res.result
-          }, 500)
+          this.goodsList = res.result
         }
       })
     },
@@ -321,7 +318,7 @@ export default {
 }
 
 .fadedown-enter-active, .fadedown-leave-active {
-  transition: all .5s;
+  transition: all .3s;
 }
 .fadedown-enter, .fadedown-leave-to {
   opacity: 0;
