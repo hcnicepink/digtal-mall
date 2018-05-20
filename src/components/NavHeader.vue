@@ -346,6 +346,7 @@ export default {
   text-align: center;
   text-decoration: none;
   color: #333;
+  transition: all .5s;
 }
 .nav-a:hover {
   background-color: #eee;

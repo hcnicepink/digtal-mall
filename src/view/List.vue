@@ -11,7 +11,7 @@
                 <span>品牌：</span>
               </div>
               <div class="mod-value">
-                <ul class="mod-value-list">
+                <ul class="mod-value-list clearfix">
                   <li :class="{'active': typeof brandid === 'undefined'}" @click="updateBrandId(undefined)">全部</li>
                   <li
                     v-for="(elem, index) in brand"
@@ -26,7 +26,7 @@
                 <span>价格：</span>
               </div>
               <div class="mod-value">
-                <ul class="mod-value-list">
+                <ul class="mod-value-list clearfix">
                   <li :class="{'active': typeof priceRange === 'undefined'}" @click="updatePriceRange(undefined)">全部</li>
                   <li
                     v-for="(elem, index) in price"
@@ -36,6 +36,25 @@
                 </ul>
               </div>
             </div>
+          </div>
+        </div>
+        <div class="filter clearfix">
+          <ul class="filter-order">
+            <li
+            v-for="(elem, index) in sort"
+            :key="index"
+            :class="{'active': elem.key === sortType}"
+            @click="updateOrder(elem.key)">{{ elem.name }}
+            <i v-show="elem.key === sortType" :class="{'opposite': sortFlag === true}"></i></li>
+          </ul>
+          <div class="filter-condition">
+            <label @click="() => {
+              if (typeof this.haveStock === 'undefined') {
+                this.haveStock = true
+              } else {
+                this.haveStock = undefined
+              }
+              this.updateGoodsList()}"><i :class="{'check': typeof haveStock !== 'undefined'}"></i>仅显示有货商品</label>
           </div>
         </div>
         <div class="goods-list">
@@ -120,6 +139,8 @@ export default {
   beforeRouteUpdate (to, from, next) {
     this.brandid = undefined
     this.priceRange = undefined
+    this.sortType = 'sold_count'
+    this.sortFlag = false
     // 更新货物列表
     let query = to.query
     if (query.categoryid === 'all') {
@@ -183,7 +204,24 @@ export default {
           range: 4,
           content: '>5000'
         }
-      ]
+      ],
+      sort: [
+        {
+          key: 'sold_count',
+          name: '销量'
+        },
+        {
+          key: 'shelf_time',
+          name: '时间'
+        },
+        {
+          key: 'price',
+          name: '价格'
+        }
+      ],
+      sortType: 'sold_count',
+      sortFlag: false,
+      haveStock: undefined
     }
   },
   computed: {
@@ -202,7 +240,10 @@ export default {
           brandid: this.brandid,
           page: this.page,
           priceRange: this.priceRange,
-          keyword: this.keyword
+          keyword: this.keyword,
+          sortType: this.sortType,
+          sortFlag: this.sortFlag ? 1 : -1,
+          haveStock: this.haveStock
         }
       }).then(response => {
         let res = response.data
@@ -217,6 +258,15 @@ export default {
     },
     updatePriceRange (range) {
       this.priceRange = range
+      this.updateGoodsList()
+    },
+    updateOrder (sortType) {
+      if (sortType === this.sortType) {
+        this.sortFlag = !this.sortFlag
+      } else {
+        this.sortType = sortType
+        this.sortFlag = false
+      }
       this.updateGoodsList()
     }
   }
@@ -318,5 +368,69 @@ export default {
 }
 .active {
   color: #00c3f5;
+}
+.filter {
+  position: relative;
+  margin: 30px 0 20px;
+  font-size: 14px;
+  color: #666;
+}
+.filter-order {
+  float: left;
+}
+.filter-condition {
+  float: right;
+}
+.filter-order {
+  margin: 0;
+  padding: 0;
+}
+.filter-order li {
+  float: left;
+  margin-right: 20px;
+  height: 20px;
+  line-height: 20px;
+  width: 50px;
+  list-style: none;
+  cursor: pointer;
+}
+.filter-order li:hover {
+  color: #00c3f5;
+}
+.filter-order li i {
+  position: relative;
+  top: 2px;
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  background-size: 14px 14px;
+  background-repeat: no-repeat;
+  background-image: url('../assets/order-arrow.png');
+  transition: transform .3s;
+}
+.opposite {
+  transform: rotate(-180deg)
+}
+.filter-condition {
+  position: relative;
+}
+.filter-condition label {
+  padding-left: 20px;
+  cursor: pointer;
+}
+.filter-condition label i {
+  position: absolute;
+  left: 0;
+  top: 3px;
+  width: 14px;
+  height: 14px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+}
+.check {
+  background-image: url('../assets/check.png');
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  background-size: 12px 12px;
 }
 </style>
