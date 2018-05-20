@@ -61,7 +61,7 @@
           <ul class="goods-list-wrap clearfix">
             <transition-group name="fadedown">
               <li v-for="(elem, index) in goodsList" class="gl-item" :key="index">
-                <a href="#">
+                <a :href="`/detail?id=${elem._id}`">
                   <div class="gl-item-wrap">
                     <img :src="elem.pic[0].md" alt="">
                     <p class="price">{{ '￥' + elem.price }}</p>
@@ -221,13 +221,11 @@ export default {
       ],
       sortType: 'sold_count',
       sortFlag: false,
-      haveStock: undefined
+      haveStock: undefined,
+      goodsList: []
     }
   },
   computed: {
-    goodsList () {
-      return this.$store.state.goodsList
-    },
     breadcrumb () {
       return this.$store.state.breadcrumb
     }
@@ -248,7 +246,10 @@ export default {
       }).then(response => {
         let res = response.data
         if (res.code === 200) {
-          this.$store.commit('uptateGoodsList', res.result)
+          this.goodsList = []
+          setTimeout(() => {
+            this.goodsList = res.result
+          }, 500)
         }
       })
     },
