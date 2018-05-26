@@ -10,5 +10,6 @@
   background-color: #f5f5f5;
   height: 80px;
   line-height: 80px;
+  text-align: center;
 }
 </style>
