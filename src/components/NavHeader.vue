@@ -28,9 +28,8 @@
           <ul v-if="isOnline" class="login-dropdown">
             <li class="login-dropdown-item">
               <a
-                href="javascript:void(0)"
-                class="nav-a"
-                @click="() => {}">我的信息</a>
+                href="/member"
+                class="nav-a">我的信息</a>
             </li>
             <li class="login-dropdown-item">
               <a
@@ -269,6 +268,7 @@ export default {
         if (res.code === 200) {
           this.$store.commit('updateUserEmail', '')
           alert('退出成功')
+          this.$router.push('/')
         }
       })
     },

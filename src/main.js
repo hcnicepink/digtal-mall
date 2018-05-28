@@ -12,7 +12,8 @@ const store = new Vuex.Store({
   state: {
     userEmail: '',
     category: [],
-    breadcrumb: []
+    breadcrumb: [],
+    userInfo: {}
   },
   mutations: {
     updateUserEmail (state, userEmail) {
@@ -23,6 +24,9 @@ const store = new Vuex.Store({
     },
     updateBreadcrumb (state, breadcrumb) {
       state.breadcrumb = breadcrumb
+    },
+    updateUserInfo (state, userInfo) {
+      state.userInfo = userInfo
     }
   }
 })

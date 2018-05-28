@@ -9,7 +9,7 @@
             头像
           </span>
           <label class="upload-avatar">
-            <img src="http://localhost:3000/images/avatar/user.png">
+            <img :src="src === '' ? 'http://localhost:3000/images/avatar/user.png' : src">
             <input v-show="false" name="file" type="file" accept="image/png,image/gif,image/jpeg" @change="uploadAvatar($event)">
           </label>
         </div>
@@ -30,12 +30,20 @@ export default {
     Breadcrumb
   },
   mounted () {
-    this.$store.commit('updateBreadcrumb', [
-      {
-        content: '个人信息',
-        href: '/member'
+    axios.get('/user/checkLogin').then(response => {
+      let res = response.data
+      if (res.code === 201) {
+        alert('请登录后重试')
+        this.$router.push('/')
+      } else {
+        this.$store.commit('updateBreadcrumb', [
+          {
+            content: '个人信息',
+            href: '/member'
+          }
+        ])
       }
-    ])
+    })
   },
   data () {
     return {
@@ -52,10 +60,13 @@ export default {
     uploadAvatar (event) {
       this.file = event.target.files[0]
       let formData = new FormData()
-      formData.append('avatar', this.file)
+      formData.append(`${this.$store.state.userEmail},${Date.now()}.${this.file.name.substring(this.file.name.lastIndexOf('.') + 1)}`, this.file)
       console.log(this.file)
       axios.post('/user/uploadAvatar', formData, {
         'Content-Type': 'multipart/form-data'
+      }).then(response => {
+        let res = response.data
+        this.src = res.result
       })
     }
   }

@@ -5,8 +5,18 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
-  name: 'App'
+  name: 'App',
+  mounted () {
+    axios.get('/user/checkLogin').then(response => {
+      let res = response.data
+      if (res.code === 200) {
+        this.$store.commit('updateUserEmail', res.result.userEmail)
+        this.$store.commit('updateUserInfo', res.result.userInfo)
+      }
+    })
+  }
 }
 </script>
 
