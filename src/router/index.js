@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Index from '@/view/Index'
 import List from '@/view/List'
 import Detail from '@/view/Detail'
+import Member from '@/view/Member'
 
 Vue.use(Router)
 
@@ -23,6 +24,11 @@ export default new Router({
       path: '/detail',
       name: 'Detail',
       component: Detail
+    },
+    {
+      path: '/member',
+      name: 'Member',
+      component: Member
     }
   ]
 })

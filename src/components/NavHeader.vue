@@ -30,7 +30,19 @@
               <a
                 href="javascript:void(0)"
                 class="nav-a"
+                @click="() => {}">我的信息</a>
+            </li>
+            <li class="login-dropdown-item">
+              <a
+                href="javascript:void(0)"
+                class="nav-a"
                 @click="() => {}">我的订单</a>
+            </li>
+            <li class="login-dropdown-item">
+              <a
+                href="javascript:void(0)"
+                class="nav-a"
+                @click="() => {}">地址管理</a>
             </li>
             <li class="login-dropdown-item">
               <a
