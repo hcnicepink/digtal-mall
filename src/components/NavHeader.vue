@@ -510,6 +510,9 @@ nav.header * {
   width: 352px;
   border: none;
 }
+.login-input input:focus {
+  outline: none;
+}
 .login-button {
   display: block;
   margin: 36px auto;
@@ -520,9 +523,6 @@ nav.header * {
   line-height: 36px;
   border: none;
   border-radius: 4px;
-}
-.login-input input:focus {
-  outline: none;
 }
 .login-footer {
   height: 60px;
