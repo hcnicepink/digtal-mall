@@ -14,10 +14,10 @@
           </label>
         </div>
         <div class="input"><span class="title">电话</span><input v-model="userInfo.phone" type="text" placeholder="请输入电话"></div>
-        <div class="input"><span class="title">昵称</span><input type="text" v-model="userInfo.nickname" placeholder="请输入昵称"></div>
+        <div class="input"><span class="title">昵称</span><input type="text" v-model="userInfo.nickname" placeholder="请输入昵称（1-10位）"></div>
         <div class="input"><span class="title">性别</span><label><input value="1" type="radio" v-model="userInfo.gender">&emsp;男</label><label><input type="radio" value="2" v-model="userInfo.gender">&emsp;女</label></div>
-        <div class="input"><span class="title">密码</span><input type="password" placeholder="旧密码"><input type="password" placeholder="新密码"></div>
-        <div class="button">保存</div>
+        <div class="input"><span class="title">密码</span><input type="password" placeholder="旧密码（6-18位）" v-model="userInfo.oldPassword"><input type="password" placeholder="新密码（6-18位）" v-model="userInfo.newPassword"></div>
+        <div @click="updateUserInfo" class="button">保存</div>
       </div>
     </div>
     <nav-footer></nav-footer>
@@ -41,7 +41,9 @@ export default {
         alert('请登录后重试')
         this.$router.push('/')
       } else {
-        this.userInfo = res.result.userInfo
+        for (let key in res.result.userInfo) {
+          this.userInfo[key] = res.result.userInfo[key]
+        }
         this.$store.commit('updateBreadcrumb', [
           {
             content: '个人信息',
@@ -55,7 +57,10 @@ export default {
     return {
       src: '',
       file: {},
-      userInfo: {}
+      userInfo: {
+        oldPassword: '',
+        newPassword: ''
+      }
     }
   },
   computed: {
@@ -74,6 +79,16 @@ export default {
       }).then(response => {
         let res = response.data
         this.userInfo.avatar = res.result
+      })
+    },
+    updateUserInfo () {
+      axios.post('/user/updateUserInfo', this.userInfo).then(response => {
+        let res = response.data
+        if (res.code === 200) {
+          this.userInfo.oldPassword = ''
+          this.userInfo.newPassword = ''
+        }
+        alert(res.msg)
       })
     }
   }
