@@ -42,7 +42,8 @@ export default {
         this.$router.push('/')
       } else {
         for (let key in res.result.userInfo) {
-          this.userInfo[key] = res.result.userInfo[key]
+          // 确保响应式
+          this.$set(this.userInfo, key, res.result.userInfo[key])
         }
         this.$store.commit('updateBreadcrumb', [
           {

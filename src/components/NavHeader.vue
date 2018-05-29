@@ -24,7 +24,7 @@
       <div class="nav-service">
         <div class="nav-service-item nav-search"><input type="text"></div>
         <div class="nav-service-item nav-login">
-          <img src="../assets/user.png" alt="">
+          <img :src="typeof $store.state.userInfo.avatar === 'undefined' ? 'http://localhost:3000/images/avatar/user.png' : $store.state.userInfo.avatar" alt="">
           <ul v-if="isOnline" class="login-dropdown">
             <li class="login-dropdown-item">
               <a
@@ -267,6 +267,7 @@ export default {
         let res = response.data
         if (res.code === 200) {
           this.$store.commit('updateUserEmail', '')
+          this.$store.commit('updateUserInfo', {})
           alert('退出成功')
           this.$router.push('/')
         }
@@ -402,10 +403,10 @@ nav.header * {
   margin: 0 1.5rem;
 }
 .nav-login img {
-  width: 22px;
-  height: 22px;
+  width: 30px;
+  height: 30px;
   vertical-align: middle;
-  border: 1px solid #8a8a8a;
+  border: 1px solid #eee;
   border-radius: 50%;
   cursor: pointer;
 }
@@ -447,8 +448,8 @@ nav.header * {
   display: block;
 }
 .nav-cart img {
-  width: 22px;
-  height: 22px;
+  width: 28px;
+  height: 28px;
   vertical-align: middle;
   cursor: pointer;
 }
