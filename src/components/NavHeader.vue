@@ -39,9 +39,8 @@
             </li>
             <li class="login-dropdown-item">
               <a
-                href="javascript:void(0)"
-                class="nav-a"
-                @click="() => {}">地址管理</a>
+                href="/address"
+                class="nav-a">地址管理</a>
             </li>
             <li class="login-dropdown-item">
               <a

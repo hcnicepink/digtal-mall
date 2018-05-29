@@ -208,7 +208,6 @@ export default {
   color: #666;
 }
 .spec > div {
-  display: inline-block;
   margin-top: -26px;
   margin-left: 75px;
 }

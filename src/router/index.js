@@ -4,6 +4,7 @@ import Index from '@/view/Index'
 import List from '@/view/List'
 import Detail from '@/view/Detail'
 import Member from '@/view/Member'
+import Address from '@/view/Address'
 
 Vue.use(Router)
 
@@ -29,6 +30,11 @@ export default new Router({
       path: '/member',
       name: 'Member',
       component: Member
+    },
+    {
+      path: '/address',
+      name: 'Address',
+      component: Address
     }
   ]
 })
