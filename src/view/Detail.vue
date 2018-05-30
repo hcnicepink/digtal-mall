@@ -32,11 +32,11 @@
               </div>
             </div>
             <div class="account-chose">
-              数&emsp;&emsp;量：<input-number :num="0" @updateNum="(num) => {this.accountChose = num}"></input-number>
+              数&emsp;&emsp;量：<input-number :num="1" @updateNum="(num) => {this.accountChose = num}"></input-number>
             </div>
             <div class="buy-action">
               <div class="store-buy">立即购买</div>
-              <div class="store-cart">加入购物车</div>
+              <div class="store-cart" @click="addCart">加入购物车</div>
             </div>
           </div>
         </div>
@@ -57,7 +57,7 @@
                   {{ detail.spec }}
                 </div>
               </div>
-              <button>加入购物车</button>
+              <button @click="addCart">加入购物车</button>
             </div>
           </div>
           <div class="left">
@@ -138,12 +138,31 @@ export default {
     return {
       detail: {},
       spec: [],
-      accountChose: 0
+      accountChose: 1
     }
   },
   computed: {
     breadcrumb () {
       return this.$store.state.breadcrumb
+    }
+  },
+  methods: {
+    addCart () {
+      axios.post('/user/addCart', {
+        goods: {
+          _id: this.detail._id,
+          title: this.detail.title,
+          price: this.detail.price,
+          spec: this.detail.spec,
+          pic: this.detail.pic,
+          href: this.$route.fullPath
+        },
+        count: this.accountChose,
+        is_check: true
+      }).then(response => {
+        let res = response.data
+        alert(res.msg)
+      })
     }
   }
 }
