@@ -3,6 +3,35 @@
     <nav-header></nav-header>
     <div class="container">
       <breadcrumb :data="breadcrumb"></breadcrumb>
+      <div class="add-address">
+        <h1 class="title">新增收货地址<span>（您目前已有地址<i>2</i>个，最多还可以增加<i>8</i>个）</span></h1>
+        <div class="row">
+          <span>收货人姓名</span><input v-model="name" placeholder="长度不超过15个字" type="text">
+          <span>收货人手机号</span><input v-model="phone" placeholder="请输入11位手机号" type="text">
+        </div>
+        <div class="row">
+          <span>收货人地址</span><select v-model="province">
+            <option disabled value="">省/直辖市</option>
+            <option v-for="(elem, key) in areaData[86]" :key="key" :value="key">{{ elem }}</option>
+          </select>
+          <select v-model="city">
+            <option disabled value="">城市</option>
+            <option v-for="(elem, key) in areaData[province]" :key="key" :value="key">{{ elem }}</option>
+          </select>
+          <select v-model="county">
+            <option disabled value="">区/县</option>
+            <option v-for="(elem, key) in areaData[city]" :key="key" :value="key">{{ elem }}</option>
+          </select>
+        </div>
+        <div class="row">
+          <span>详细地址</span><input v-model="detailAddress" placeholder="请输入不少于4不超过150个字的详细地址，例如：路名，门牌号" type="text">
+        </div>
+        <div @click="saveAddress" class="button">保存</div>
+        <label class="set-default"><input v-model="isDefault" type="checkbox">&nbsp;设为默认</label>
+      </div>
+      <div class="addresss">
+        <h1>已有地址</h1>
+      </div>
     </div>
     <nav-footer></nav-footer>
   </div>
@@ -12,6 +41,7 @@ import NavHeader from '@/components/NavHeader'
 import NavFooter from '@/components/NavFooter'
 import Breadcrumb from '@/components/Breadcrumb'
 import axios from 'axios'
+import { pcaa } from 'area-data'
 export default {
   components: {
     NavHeader,
@@ -38,6 +68,129 @@ export default {
     breadcrumb () {
       return this.$store.state.breadcrumb
     }
+  },
+  data () {
+    return {
+      areaData: pcaa,
+      name: '',
+      phone: '',
+      province: '',
+      city: '',
+      county: '',
+      detailAddress: '',
+      isDefault: false
+    }
+  },
+  methods: {
+    saveAddress () {
+      axios.post('/user/addAddress', {
+        name: this.name,
+        phone: this.phone,
+        province: this.province,
+        city: this.city,
+        county: this.county,
+        detailAddress: this.detailAddress,
+        isDefault: this.isDefault
+      }).then(response => {
+        let res = response.data
+        alert(res.msg)
+      })
+    }
   }
 }
 </script>
+<style scoped>
+.add-address {
+  padding: 10px 0 10px 20px;
+}
+.add-address h1.title {
+  margin-bottom: 30px;
+  color: #666;
+}
+.add-address h1.title span {
+  font-size: 14px;
+  font-weight: normal;
+  color: #797979;
+}
+.add-address h1.title span i {
+  color: #00c3f5;
+  font-style: normal;
+  font-weight: bold;
+}
+.add-address .row {
+  margin-bottom: 25px;
+  height: 37px;
+  line-height: 37px;
+  font-size: 14px;
+  color: #666;
+}
+.add-address .row:nth-of-type(1) input {
+  margin-right: 30px;
+  padding-left: 8px;
+  height: 37px;
+  width: 350px;
+}
+.add-address .row:nth-of-type(2) select {
+  margin-right: 30px;
+  padding-left: 8px;
+  height: 37px;
+  width: 259px;
+}
+.add-address .row:nth-of-type(3) input {
+  margin-right: 30px;
+  padding-left: 8px;
+  height: 37px;
+  width: 845px;
+}
+.add-address .row span {
+  display: inline-block;
+  width: 100px;
+  margin-right: 10px;
+}
+.add-address .button {
+  display: inline-block;
+  margin: 10px 0 0 110px;
+  padding: 10px 20px;
+  line-height: 1.3333;
+  border-radius: 3px;
+  font-size: 14px;
+  width: 118px;
+  text-align: center;
+  color: #fff;
+  background-color: #00c3f5;
+  cursor: pointer;
+}
+.add-address .button:hover {
+  color: #fff;
+  background-color: #4dcff6;
+}
+.add-address .button:active {
+  outline: 0;
+  background-image: none;
+  box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+}
+.add-address .set-default {
+  margin-left: 20px;
+  display: inline-block;
+  font-size: 14px;
+  line-height: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+.add-address .set-default input {
+  position: relative;
+  top: 1px;
+}
+input::-webkit-input-placeholder{
+    color:#ddd;
+}
+input::-moz-placeholder{   /* Mozilla Firefox 19+ */
+    color:#ddd;
+}
+input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+    color:#ddd;
+}
+input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
+    color:#ddd;
+}
+</style>
