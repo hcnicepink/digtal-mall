@@ -26,11 +26,32 @@
         <div class="row">
           <span>详细地址</span><input v-model="detailAddress" placeholder="请输入不少于4不超过150个字的详细地址，例如：路名，门牌号" type="text">
         </div>
-        <div @click="saveAddress" class="button">保存</div>
+        <div @click="addAddress" class="button">保存</div>
         <label class="set-default"><input v-model="isDefault" type="checkbox">&nbsp;设为默认</label>
       </div>
-      <div class="addresss">
-        <h1>已有地址</h1>
+      <div class="already-address">
+        <h1 class="title">已有地址</h1>
+        <table>
+          <thead>
+            <tr>
+              <th>收货人姓名</th>
+              <th>收货人地址</th>
+              <th>收货人手机号</th>
+              <th>操作</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(elem, index) in addressList" :key="index">
+              <td>{{ elem.receiver }}</td>
+              <td>{{ `${areaData[86][elem.province]}${areaData[elem.province][elem.city]}${areaData[elem.city][elem.county]}${elem.address}` }}</td>
+              <td>{{ elem.cellphone }}</td>
+              <td><a class="edit" href="javascript:;" @click="editAddress(elem)">修改</a><a class="delete" href="javascript:;" @click="deleteAddress(index)">删除</a></td>
+              <td v-if="elem.is_default === true" class="default"> √ 默认地址</td>
+              <td v-else class="set-default"><span @click="setDefault(index)">设为默认</span></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
     <nav-footer></nav-footer>
@@ -63,6 +84,14 @@ export default {
         ])
       }
     })
+    axios.get('/user/getAddress').then(response => {
+      let res = response.data
+      if (res.code === 200) {
+        this.addressList = res.result
+      } else {
+        alert(res.msg)
+      }
+    })
   },
   computed: {
     breadcrumb () {
@@ -78,11 +107,12 @@ export default {
       city: '',
       county: '',
       detailAddress: '',
-      isDefault: false
+      isDefault: false,
+      addressList: []
     }
   },
   methods: {
-    saveAddress () {
+    addAddress () {
       axios.post('/user/addAddress', {
         name: this.name,
         phone: this.phone,
@@ -93,8 +123,43 @@ export default {
         isDefault: this.isDefault
       }).then(response => {
         let res = response.data
+        if (res.code === 200) {
+          this.addressList = res.result
+          this.name = ''
+          this.phone = ''
+          this.province = ''
+          this.city = ''
+          this.county = ''
+          this.detailAddress = ''
+          this.isDefault = ''
+        }
         alert(res.msg)
       })
+    },
+    deleteAddress (index) {
+      axios.post('/user/deleteAddress', {
+        index: index
+      }).then(response => {
+        let res = response.data
+        this.addressList = res.result
+      })
+    },
+    setDefault (index) {
+      axios.post('/user/setAddressDefault', {
+        index: index
+      }).then(response => {
+        let res = response.data
+        this.addressList = res.result
+      })
+    },
+    editAddress (elem) {
+      this.name = elem.receiver
+      this.phone = elem.cellphone
+      this.province = elem.province
+      this.city = elem.city
+      this.county = elem.county
+      this.detailAddress = elem.address
+      this.isDefault = elem.is_default
     }
   }
 }
@@ -192,5 +257,83 @@ input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
 }
 input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
     color:#ddd;
+}
+.already-address {
+  padding: 30px 0 10px 20px;
+}
+.already-address h1.title {
+  margin-bottom: 30px;
+  color: #666;
+}
+.already-address table {
+  width: 100%;
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+}
+.already-address table thead {
+  background-color: #fafafa;
+  height: 50px;
+  line-height: 50px;
+}
+.already-address table thead tr th {
+  font-weight: normal;
+}
+.already-address table tbody tr {
+  height: 50px;
+  line-height: 50px;
+}
+.already-address table tbody tr:hover {
+  background-color: #fdfdfd;
+  border: 1px solid #4dcff6;
+}
+.already-address table tbody tr a {
+  font-size: 12px;
+  text-decoration: none;
+}
+.already-address table tbody tr .edit {
+  margin-right: 8px;
+  color: #666;
+}
+.already-address table tbody tr .edit:hover {
+  color: #00c3f5
+}
+.already-address table tbody tr .delete {
+  color: #c6c6c6;
+}
+.already-address table tbody tr .default {
+  color: #00c3f5;
+  font-weight: bold;
+}
+.already-address table tbody tr .set-default span {
+  visibility: hidden;
+  padding: 0 5px;
+  display: inline-block;
+  background-color: #00c3f5;
+  color: #fff;
+  height: 20px;
+  line-height: 20px;
+  font-size: 12px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.already-address table tbody tr:hover .set-default span {
+  visibility: visible;
+}
+/* 表格宽度 */
+.already-address table td:nth-child(1) {
+  width: 15%;
+}
+.already-address table td:nth-child(2) {
+  width: 40%;
+}
+.already-address table td:nth-child(3) {
+  width: 15%;
+}
+.already-address table td:nth-child(4) {
+  width: 15%;
+}
+.already-address table td:nth-child(5) {
+  width: 15%;
 }
 </style>
