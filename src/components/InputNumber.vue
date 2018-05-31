@@ -1,7 +1,7 @@
 <template>
   <div class="input-number">
     <button @click="minus" class="minus">-</button>
-    <input @input="updateNum()" v-model="counter" type="text" class="number">
+    <input readonly @input="updateNum()" v-model="counter" type="text" class="number">
     <button @click="plus" class="plus">+</button>
   </div>
 </template>
@@ -24,7 +24,7 @@ export default {
       this.updateNum()
     },
     minus () {
-      if (this.counter !== 0) {
+      if (this.counter !== 1) {
         this.counter--
         this.updateNum()
       }

@@ -4,6 +4,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import App from './App'
 import router from './router'
+import {currency} from './util/currency'
 
 Vue.config.productionTip = false
 Vue.use(Vuex)
@@ -13,7 +14,8 @@ const store = new Vuex.Store({
     userEmail: '',
     category: [],
     breadcrumb: [],
-    userInfo: {}
+    userInfo: {},
+    cartList: []
   },
   mutations: {
     updateUserEmail (state, userEmail) {
@@ -27,9 +29,14 @@ const store = new Vuex.Store({
     },
     updateUserInfo (state, userInfo) {
       state.userInfo = userInfo
+    },
+    updateCartList (state, cartList) {
+      state.cartList = cartList
     }
   }
 })
+
+Vue.filter('currency', currency)
 
 /* eslint-disable no-new */
 new Vue({

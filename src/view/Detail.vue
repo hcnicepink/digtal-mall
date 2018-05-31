@@ -16,7 +16,7 @@
             <h2 class="subtitle">{{ detail.subtitle }}</h2>
             <div class="price">
               <div class="pro-price">
-                价&emsp;&emsp;格：<span>￥{{ detail.price }}</span>
+                价&emsp;&emsp;格：<span>{{ detail.price | currency('￥') }}</span>
               </div>
               <div class="promise">
                 服务承诺：{{ detail.promise }}
@@ -32,7 +32,7 @@
               </div>
             </div>
             <div class="account-chose">
-              数&emsp;&emsp;量：<input-number :num="1" @updateNum="(num) => {this.accountChose = num}"></input-number>
+              数&emsp;&emsp;量：<input-number :num="1" @updateNum="(num) => {accountChose = num}"></input-number>
             </div>
             <div class="buy-action">
               <div class="store-buy">立即购买</div>
@@ -151,7 +151,7 @@ export default {
       axios.post('/user/addCart', {
         goods: {
           _id: this.detail._id,
-          title: this.detail.title,
+          name: this.detail.name,
           price: this.detail.price,
           spec: this.detail.spec,
           pic: this.detail.pic,
@@ -162,6 +162,9 @@ export default {
       }).then(response => {
         let res = response.data
         alert(res.msg)
+        if (res.code === 200) {
+          this.$store.commit('updateCartList', res.result)
+        }
       })
     }
   }
@@ -199,6 +202,7 @@ export default {
 }
 .detail .right-detail {
   float: right;
+  padding-right: 60px;
   padding-top: 20px;
   width: 690px;
 }

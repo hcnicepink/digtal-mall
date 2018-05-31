@@ -64,7 +64,7 @@
                 <a :href="`/detail?id=${elem._id}`">
                   <div class="gl-item-wrap">
                     <img :src="elem.pic[0].md" alt="">
-                    <p class="price">{{ '￥' + elem.price }}</p>
+                    <p class="price">{{ elem.price | currency('￥') }}</p>
                     <p class="title">{{ elem.title }}</p>
                   </div>
                 </a>

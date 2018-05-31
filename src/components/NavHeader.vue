@@ -71,7 +71,17 @@
           </ul>
         </div>
         <div class="nav-service-item nav-cart">
-          <img src="../assets/cart.png" alt="">
+          <a href="/cart">
+            <img src="../assets/cart.png" alt="">
+            <i v-show="$store.state.cartList !== null && $store.state.cartList.length !== 0">{{ (() => {
+              if ($store.state.cartList === null) return 0
+              let count = 0;
+              $store.state.cartList.forEach(elem => {
+                count += elem.count
+              })
+              return count
+              })() }}</i>
+          </a>
         </div>
       </div>
       <!-- 服务列表 -->
@@ -446,11 +456,29 @@ nav.header * {
 .nav-login:hover .login-dropdown {
   display: block;
 }
+.nav-cart {
+  position: relative;
+}
 .nav-cart img {
   width: 28px;
   height: 28px;
   vertical-align: middle;
   cursor: pointer;
+}
+.nav-cart i {
+  position: absolute;
+  padding: 1px 4px;
+  display: block;
+  line-height: 14px;
+  top: 23px;
+  right: -5px;
+  font-style: normal;
+  font-weight: bold;
+  background-color: #f1403c;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 7px;
+
 }
 .login-header img {
   display: block;
