@@ -84,18 +84,13 @@ export default {
         ])
       }
     })
-    axios.get('/user/getAddress').then(response => {
-      let res = response.data
-      if (res.code === 200) {
-        this.addressList = res.result
-      } else {
-        alert(res.msg)
-      }
-    })
   },
   computed: {
     breadcrumb () {
       return this.$store.state.breadcrumb
+    },
+    addressList () {
+      return this.$store.state.addressList
     }
   },
   data () {
@@ -107,8 +102,7 @@ export default {
       city: '',
       county: '',
       detailAddress: '',
-      isDefault: false,
-      addressList: []
+      isDefault: false
     }
   },
   methods: {
@@ -124,7 +118,7 @@ export default {
       }).then(response => {
         let res = response.data
         if (res.code === 200) {
-          this.addressList = res.result
+          this.$store.commit('updateAddressList', res.result)
           this.name = ''
           this.phone = ''
           this.province = ''
@@ -141,7 +135,7 @@ export default {
         index: index
       }).then(response => {
         let res = response.data
-        this.addressList = res.result
+        this.$store.commit('updateAddressList', res.result)
       })
     },
     setDefault (index) {
@@ -149,7 +143,7 @@ export default {
         index: index
       }).then(response => {
         let res = response.data
-        this.addressList = res.result
+        this.$store.commit('updateAddressList', res.result)
       })
     },
     editAddress (elem) {

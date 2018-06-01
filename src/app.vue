@@ -15,6 +15,7 @@ export default {
         this.$store.commit('updateUserEmail', res.result.userEmail)
         this.$store.commit('updateUserInfo', res.result.userInfo)
         this.$store.commit('updateCartList', res.result.cartList)
+        this.$store.commit('updateAddressList', res.result.addressList)
       }
     })
   }

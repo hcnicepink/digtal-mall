@@ -303,6 +303,7 @@ export default {
   line-height: 71px;
 }
 .cart .cart-footer .right span {
+  font-size: 20px;
   color: #e02b41;
   font-weight: bold;
 }

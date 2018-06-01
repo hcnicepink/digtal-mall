@@ -35,7 +35,7 @@
               数&emsp;&emsp;量：<input-number :num="1" @updateNum="(num) => {accountChose = num}"></input-number>
             </div>
             <div class="buy-action">
-              <div class="store-buy">立即购买</div>
+              <div class="store-buy" @click="buyNow">立即购买</div>
               <div class="store-cart" @click="addCart">加入购物车</div>
             </div>
           </div>
@@ -164,6 +164,27 @@ export default {
         alert(res.msg)
         if (res.code === 200) {
           this.$store.commit('updateCartList', res.result)
+        }
+      })
+    },
+    buyNow () {
+      axios.post('/user/addCart', {
+        goods: {
+          _id: this.detail._id,
+          name: this.detail.name,
+          price: this.detail.price,
+          spec: this.detail.spec,
+          pic: this.detail.pic,
+          href: this.$route.fullPath
+        },
+        count: this.accountChose,
+        is_check: true
+      }).then(response => {
+        let res = response.data
+        alert(res.msg)
+        if (res.code === 200) {
+          this.$store.commit('updateCartList', res.result)
+          this.$router.push('/cart')
         }
       })
     }

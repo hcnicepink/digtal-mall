@@ -15,7 +15,8 @@ const store = new Vuex.Store({
     category: [],
     breadcrumb: [],
     userInfo: {},
-    cartList: []
+    cartList: [],
+    addressList: []
   },
   mutations: {
     updateUserEmail (state, userEmail) {
@@ -32,6 +33,9 @@ const store = new Vuex.Store({
     },
     updateCartList (state, cartList) {
       state.cartList = cartList
+    },
+    updateAddressList (state, addressList) {
+      state.addressList = addressList
     }
   }
 })
