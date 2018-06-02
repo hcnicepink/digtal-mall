@@ -363,6 +363,9 @@ export default {
 }
 </script>
 <style scoped>
+nav.header {
+  background-color: #fff;
+}
 .nav-a {
   display: block;
   text-align: center;

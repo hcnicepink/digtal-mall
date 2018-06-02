@@ -37,6 +37,7 @@ export default {
 body {
   min-width: 1240px;
   overflow-x: auto;
+  font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei", "Hiragino Sans GB", "Heiti SC", "WenQuanYi Micro Hei", sans-serif;
 }
 html {
   font-size: 10px;

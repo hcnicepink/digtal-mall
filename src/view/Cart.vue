@@ -63,7 +63,7 @@
               件
           </span>
         </p>
-        <div class="checkout">
+        <div class="checkout" @click="$router.push('/orderConfirm')">
           去结算
         </div>
         <p class="right">

@@ -6,11 +6,11 @@
       <div class="add-address">
         <h1 class="title">新增收货地址<span>（您目前已有地址<i>2</i>个，最多还可以增加<i>8</i>个）</span></h1>
         <div class="row">
-          <span>收货人姓名</span><input v-model="name" placeholder="长度不超过15个字" type="text">
-          <span>收货人手机号</span><input v-model="phone" placeholder="请输入11位手机号" type="text">
+          <span>收货人姓名 <span>*</span></span><input v-model="name" placeholder="长度不超过15个字" type="text">
+          <span>收货人手机号 <span>*</span></span><input v-model="phone" placeholder="请输入11位手机号" type="text">
         </div>
         <div class="row">
-          <span>收货人地址</span><select v-model="province">
+          <span>收货人地址 <span>*</span></span><select v-model="province">
             <option disabled value="">省/直辖市</option>
             <option v-for="(elem, key) in areaData[86]" :key="key" :value="key">{{ elem }}</option>
           </select>
@@ -24,7 +24,7 @@
           </select>
         </div>
         <div class="row">
-          <span>详细地址</span><input v-model="detailAddress" placeholder="请输入不少于4不超过150个字的详细地址，例如：路名，门牌号" type="text">
+          <span>详细地址 <span>*</span></span><input v-model="detailAddress" placeholder="请输入不少于4不超过150个字的详细地址，例如：路名，门牌号" type="text">
         </div>
         <div @click="addAddress" class="button">保存</div>
         <label class="set-default"><input v-model="isDefault" type="checkbox">&nbsp;设为默认</label>
@@ -201,10 +201,15 @@ export default {
   height: 37px;
   width: 845px;
 }
-.add-address .row span {
+.add-address .row > span {
   display: inline-block;
   width: 100px;
   margin-right: 10px;
+}
+.add-address .row > span > span {
+  position: relative;
+  top: 2px;
+  color: red;
 }
 .add-address .button {
   display: inline-block;
