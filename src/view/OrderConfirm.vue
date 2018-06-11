@@ -143,7 +143,7 @@
             应付<div class="order-total-price total">{{ totalPrice | currency('￥') }}</div>
           </div>
           <div class="order-total-row clearfix">
-            <div class="button">下单并支付</div>
+            <div class="button" @click="orderConfirm">下单并支付</div>
           </div>
         </div>
       </div>
@@ -276,6 +276,17 @@ export default {
       this.addAddressData.detailAddress = elem.address
       this.addAddressData.isDefault = false
       this.addModal = true
+    },
+    orderConfirm () {
+      axios.post('user/orderConfirm', {address: this.addressList[this.checkIndex]}).then(response => {
+        let res = response.data
+        if (res.code === 200) {
+          alert(res.msg)
+          this.$router.push('orderSuccess')
+        } else {
+          alert(res.msg)
+        }
+      })
     }
   },
   computed: {
