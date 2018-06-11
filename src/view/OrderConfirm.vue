@@ -282,7 +282,7 @@ export default {
         let res = response.data
         if (res.code === 200) {
           alert(res.msg)
-          this.$router.push('orderSuccess')
+          this.$router.push(`/orderSuccess?orderId=${res.result.id}&total=${res.result.total}`)
         } else {
           alert(res.msg)
         }

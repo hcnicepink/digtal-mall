@@ -320,4 +320,14 @@ export default {
   background-color: #00c3f5;
   cursor: pointer;
 }
+.cart .cart-footer .checkout:hover {
+  color: #fff;
+  background-color: #4dcff6;
+}
+.cart .cart-footer .checkout:active {
+  outline: 0;
+  background-image: none;
+  box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+}
+
 </style>
