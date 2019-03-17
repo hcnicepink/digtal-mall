@@ -1,7 +1,7 @@
 <template>
   <div class="footer">
     <div class="container">
-      &copy;2018 Fashion Digtal
+      &copy;2019 Fashion Digtal
     </div>
   </div>
 </template>
